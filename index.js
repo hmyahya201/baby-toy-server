@@ -28,6 +28,18 @@ async function run() {
     await client.connect();
     const toyCollection = client.db("toyStore").collection("toys")
 
+    //seach index
+    const indexKey = {name: 1}
+    const indexOption = {indexName: "toyName"}
+    const result = await toyCollection.createIndex(indexKey, indexOption)
+    console.log(result) 
+
+    app.get('/gettoybyname/:text', async(req, res)=>{
+      const text = req.params.text
+      const result = await toyCollection.find({name:{ $regex: text, $options: "i" } }).toArray()
+      res.send(result)
+    })
+
 //rout for gellery and all toys
    app.get('/all-toys', async(req, res)=>{
       const result = await toyCollection.find().toArray()
