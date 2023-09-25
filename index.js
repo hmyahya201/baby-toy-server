@@ -34,6 +34,20 @@ async function run() {
     const result = await toyCollection.createIndex(indexKey, indexOption)
     console.log(result) 
 
+    //total toys
+    app.get('/totaltoys', async(req, res)=>{
+         const result = await toyCollection.estimatedDocumentCount()
+         res.send({totalItems: result})
+    })
+
+    app.get('/all-toys', async(req, res)=>{
+      const page = parseInt(req.query?.page) || 0
+      const limit = parseInt(req.query?.limit) || 20
+      const skip = page* limit
+      const result = await toyCollection.find().skip(skip).limit(limit).toArray()
+      res.send(result)
+   })
+
     app.get('/gettoybyname/:text', async(req, res)=>{
       const text = req.params.text
       const result = await toyCollection.find({name:{ $regex: text, $options: "i" } }).toArray()
