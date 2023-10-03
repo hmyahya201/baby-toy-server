@@ -67,7 +67,6 @@ async function run() {
       if(req.query?.email){
         query = {
           sellerEmail: req.query.email}
-        console.log(query)
       }
       const result = await toyCollection.find(query).toArray()
       res.send(result)
@@ -76,8 +75,20 @@ async function run() {
     //update toy get rout
     app.get('/toyinfo/:id', async(req, res)=>{
       const id = req.params.id
+      console.log(id)
       const query = {_id: new ObjectId(id)}
       const result = await toyCollection.findOne(query)
+      res.send(result)
+    })
+    //update route
+    app.patch('/updatetoy/:id', async(req, res)=>{
+      const id = req.params.id
+      const filter = {_id: new ObjectId(id)}
+      const updateToy = req.body
+      const updatedDoc = {
+         $set: {...updateToy}
+      }
+      const result = await toyCollection.updateOne(filter, updatedDoc)
       res.send(result)
     })
 
