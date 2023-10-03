@@ -92,6 +92,14 @@ async function run() {
       res.send(result)
     })
 
+    //delete route
+    app.delete('/delete/:id', async(req, res)=>{
+      const id = req.params.id
+      const filter = {_id: new ObjectId(id)}
+      const result = await toyCollection.deleteOne(filter)
+      res.send(result)
+    })
+
 //rout for gellery and all toys
    app.get('/all-toys', async(req, res)=>{
       const result = await toyCollection.find().toArray()
