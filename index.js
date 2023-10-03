@@ -54,6 +54,25 @@ async function run() {
       res.send(result)
     })
 
+    //upload toy
+    app.post('/upload-toy', async(req, res)=>{
+      const data = req.body
+      const result = await toyCollection.insertOne(data)
+      res.send(result)
+    })
+
+    //my toys
+    app.get('/mytoys', async(req, res)=>{
+      let query = {}
+      if(req.query?.email){
+        query = {
+          sellerEmail: req.query.email}
+        console.log(query)
+      }
+      const result = await toyCollection.find(query).toArray()
+      res.send(result)
+    })
+
 //rout for gellery and all toys
    app.get('/all-toys', async(req, res)=>{
       const result = await toyCollection.find().toArray()
