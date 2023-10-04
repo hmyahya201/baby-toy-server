@@ -1,5 +1,5 @@
-const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const express = require('express');
 require('dotenv').config()
 const cors = require('cors');
 const port = process.env.PORT || 5000
@@ -8,9 +8,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.get('/', (req, res)=>{
-   res.send("ok everythisn")
-})
+
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.p43vn94.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -26,6 +24,7 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+   
     const toyCollection = client.db("toyStore").collection("toys")
 
     //seach index
@@ -139,4 +138,8 @@ run().catch(console.dir);
 
 app.listen(port, (req, res)=>{
    console.log(`The server is running on the port of ${port}`)
+})
+
+app.get('/', (req, res)=>{
+  res.send("ok everythisn")
 })
